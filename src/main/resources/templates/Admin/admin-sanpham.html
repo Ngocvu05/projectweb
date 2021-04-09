@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Admin - Sản Phẩm</title>
+
+  <!-- Custom fonts for this template-->
+  <link th:href="@{/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
+
+  <!-- Custom styles for this template-->
+  <link th:href="@{/css/sb-admin.css}" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+          th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js}"></script>
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css"
+        th:href="@{https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css}">
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"
+          th:src="@{https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js}"></script>
+
+</head>
+
+<body id="page-top">
+
+<nav class="navbar navbar-expand navbar-dark bg-dark static-top">
+
+  <a class="navbar-brand mr-1" href="index.html">Admin</a>
+
+  <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
+    <i class="fas fa-bars"></i>
+  </button>
+
+
+
+</nav>
+
+<div id="wrapper">
+
+  <!-- Sidebar -->
+  <ul th:replace="Admin/sidebar :: sidebar"></ul>
+  <!--    content wrapper ,content sp-->
+  <div id="content-wrapper">
+    <div class="container-fluid" th:fragment="Sanpham_content">
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="#">Admin</a>
+        </li>
+        <li class="breadcrumb-item active">Sản Phẩm</li>
+      </ol>
+
+
+
+      <div class="card mb-3">
+        <div class="card-body">
+          <div class="table">
+            <!-- Modal add -->
+            <div class="row">
+            <div class="themsp" style="margin-bottom: 10px;">
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                Thêm
+              </button>
+            </div>
+              <div class="search justify-content-end" style="margin-left: 700px">
+                <form class="form-inline pull-right"  method="GET">
+                  <div class="form-group">
+                    <input type="text" class="form-control" name="search"
+                           placeholder="Type employee name..." />
+                  </div>
+                  <button type="submit" class="btn btn-primary">Search</button>
+                </form>
+              </div>
+            </div>
+
+            <script type="text/javascript">
+              $(document).ready(function () {
+                $('#comboboxDM').on('change',function () {
+                  var id_danhmuc = $(this).val();
+                  $.ajax({
+                    type :'GET',
+                    url : "/listthbydanhmuc/" +id_danhmuc,
+                      dataType : 'json',
+                    success : function (result) {
+                      var s ='';
+                      for(var i = 0 ; i <result.length;i++){
+                        s += '<option value ="' + result[i].id_thuonghieu +'">' + result[i].tenthuonghieu + '</option>';
+                      }
+                      $('#comboboxTH').html(s)
+                    }
+                  })
+                })
+                var tensanpham = $("#tensanpham");
+                var tensanpham_ = $("#tensanpham_");
+                tensanpham.on("blur" ,function () {
+                  if(tensanpham.val()== ""){
+                    tensanpham_.css("display","");
+                    tensanpham_.css("color", "red");
+                  } else {
+
+                    tensanpham_.css("display", "none");
+                  }
+                })
+                var giasanpham = $("#giasanpham");
+                var giasanpham_ = $("#giasanpham_");
+                giasanpham.on("blur" ,function () {
+                  if(giasanpham.val()== ""){
+                    giasanpham_.css("display","");
+                    giasanpham_.css("color", "red");
+                  } else {
+                    giasanpham_.css("display", "none");
+                  }
+                })
+                var giamgia = $("#giamgia");
+                var giamgia_ = $("#giamgia_");
+                giamgia.on("blur" ,function () {
+                  if(giamgia.val()== ""){
+                    giamgia_.css("display","");
+                    giamgia_.css("color", "red");
+                  } else {
+                    giamgia_.css("display", "none");
+                  }
+                })
+                var mota = $("#mota");
+                var mota_ = $("#mota_");
+                mota.on("blur" ,function () {
+                  if(mota.val()== ""){
+                    mota_.css("display","");
+                    mota_.css("color", "red");
+                  } else {
+                    mota_.css("display", "none");
+                  }
+                })
+                var soluong = $("#soluong");
+                var soluong_ = $("#soluong_");
+                soluong.on("blur" ,function () {
+                  if(soluong.val()== ""){
+                    soluong_.css("display","");
+                    soluong_.css("color", "red");
+                  } else {
+                    soluong_.css("display", "none");
+                  }
+                })
+              })
+            </script>
+
+            <div class="modal" id="myModal">
+              <div class="modal-dialog modal-lg" >
+                <div class="modal-content">
+                  <!-- Modal Header -->
+                  <div class="modal-header">
+                    <h4 class="modal-title">Thêm Sản Phẩm</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  </div>
+                  <div class="modal-body">
+                    <form method="POST" action="/Admin/InsertSanPham" enctype="multipart/form-data" >
+                      <div class="form-group">
+                        <legend class="">Thêm</legend>
+                      </div>
+                      <div class="form-group">
+                        <!-- <label for="tensp">Tên Sản Phẩm</label> -->
+                        <input type="text" class="form-control" placeholder="Tên Sản Phẩm" name="tensanpham" id="tensanpham">
+                        <small style="display: none" id="tensanpham_" class="form-text">Tên sản phẩm không được để
+                          trống</small>
+                      </div>
+                      <div class="form-group">
+                        <!-- <label for="pwd">Giá</label> -->
+                        <input type="text" class="form-control" placeholder="Giá" name="giasanpham" id="giasanpham">
+                        <small style="display: none" id="giasanpham_" class="form-text">Giá không được để
+                          trống</small>
+                      </div>
+                      <div class="form-group">
+                        <!-- <label for="giamgia">Giảm Giá</label> -->
+                        <input type="text" class="form-control" placeholder="Giảm Giá" name="giamgia" id="giamgia">
+                        <small style="display: none" id="giamgia_" class="form-text">Giảm giá không được để
+                          trống</small>
+                      </div>
+                      <div class="form-group">
+                        <!-- <label for="mota">Mô Tả</label> -->
+                        <input type="text" class="form-control" placeholder="Mô Tả" name="motasanpham" id="mota">
+                        <small style="display: none" id="mota_" class="form-text">Mô tả không được để
+                          trống</small>
+                      </div>
+                      <div class="form-group">
+                        <!-- <label for="soluong">Số Lượng</label> -->
+                        <input type="text" class="form-control" placeholder="Số Lượng" name="soluong" id="soluong">
+                        <small style="display: none" id="soluong_" class="form-text">Số lượng không được để
+                          trống</small>
+                      </div>
+                      <div class="form-group">
+                        <select class="form-control" name="id_danhmuc" id="comboboxDM" >
+                            <option selected = "selected">Danh Mục</option>
+                          <option th:each="dmuc , i : ${listdanhmuc}" th:text="${dmuc.tendanhmuc}"
+                                  th:value="${dmuc.id}"></option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <select class="form-control" name="id_thuonghieu" id="comboboxTH">
+                            <option selected = "selected">Thương Hiệu</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <!--                      <input type="text" class="form-control" placeholder="Số Lượng" name="hinhsanpham">-->
+                        <label > Hình Ảnh</label>
+                        <input type="file" accept="image/*" name="hinhsanpham"  multiple />
+                      </div>
+                      <div class="form-group" style="padding-bottom: 10px;">
+                        <button type="submit" class="btn btn-primary">Thêm</button>
+                        <button type="submit" class="btn btn-secondar">Làm Mới</div>
+
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+
+          <!-- table sản phẩm -->
+          <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" >
+            <tr>
+              <th style="width: 22%;">Tên Sản Phẩm</th>
+              <th style="width: 12%;">Giá</th>
+              <th style="width: 10%;">Giảm Giá</th>
+              <th style="width: 20%;">Mô Tả</th>
+              <th style="width: 10%;">Số Lượng</th>
+              <th style="width: 11%;">Hình Ảnh</th>
+              <th style="width: 10%;"> </th>
+            </tr>
+            <tbody>
+            <tr  th:each="sp ,i : ${product.pageList}">
+              <td th:text="${sp.tensanpham}"></td>
+              <td th:text="${#numbers.formatInteger(sp.getGiasanpham(),3,'POINT')}+' VND'"></td>
+              <td th:text="${#numbers.formatInteger(sp.getGiamgia(),1,'POINT')}"></td>
+              <td th:text="${sp.motasanpham}"></td>
+              <td th:text="${#numbers.formatInteger(sp.getSoluong(),1,'POINT')}"></td>
+              <!--                    <td th:text="${sp.danhMuc.tendanhmuc}"></td>-->
+              <td style="height: 100px"><img style="height: 100%" th:src="'/images/'+ ${sp.getImages().get(0).getName_img()}"></td>
+              <td>
+                <!--button chi tiet-->
+                <a class="btn btn-success" th:href="@{/Admin/chitietsanpham/{id}(id=${sp.id})}"><i class="fa fa-search"></i></a>
+                <!--button xoa-->
+                <a class="btn btn-danger" th:href="@{/Admin/qlsp/{id}/delete(id=${sp.id})}"><i class="fas fa-trash"></i></a>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <div class="paging">
+            <ul class="pagination">
+              <li
+                      th:class="${currentIndex == 1}? 'page-item disabled' : 'page-item'">
+                <a class="page-link" th:href="@{/Admin/quanlysp}">First</a>
+              </li>
+              <li
+                      th:class="${currentIndex == 1}? 'page-item disabled': 'page-item' ">
+                <a class="page-link" aria-label="Previous"
+                   th:href="@{|${baseUrl}${currentIndex - 1}|}"
+                   title='Go to previous page'><span aria-hidden="true">«</span>
+                  <span class="sr-only">Previous</span></a>
+              </li>
+              <li th:each="item : ${#numbers.sequence(beginIndex,endIndex)}"
+                  th:class="${item == currentIndex ? 'page-item active' :'page-item' }">
+                <a class="page-link" th:href="@{|${baseUrl}${item}|}"> <span
+                        th:text='${item}'>1</span>
+                </a>
+              </li>
+              <li
+                      th:class="${currentIndex == totalPageCount}? 'page-item disabled': 'page-item'">
+                <a class="page-link" aria-label="Next"
+                   th:href="@{|${baseUrl}${currentIndex + 1}|}" title='Go to next page'><span
+                        aria-hidden="true">»</span> <span class="sr-only">Next</span></a>
+              </li>
+              <li
+                      th:class="${currentIndex == totalPageCount}? 'page-item disabled':'page-item'">
+                <a class="page-link" th:href="@{|${baseUrl}${totalPageCount}|}">Last</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- /.container-fluid -->
+
+    <!-- Sticky Footer -->
+    <footer class="sticky-footer">
+      <div class="container my-auto">
+        <div class="copyright text-center my-auto">
+          <span>Copyright © Your Website 2020</span>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+  <!-- /.content-wrapper -->
+  <!--    /content wrapper , contetn sp-->
+
+</div>
+<!-- /#wrapper -->
+
+
+  <!-- Bootstrap core JavaScript-->
+  <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+  <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script th:src="@{/vendor/jquery-easing/jquery.easing.min.js}"></script>
+
+  <!-- Page level plugin JavaScript-->
+  <script th:src="@{/vendor/datatables/jquery.dataTables.js}"></script>
+  <script th:src="@{/vendor/datatables/dataTables.bootstrap4.js}"></script>
+
+<!--  &lt;!&ndash; Custom scripts for all pages &ndash;&gt;-->
+<!--  <script th:src="@{/js/sb-admin.min.js}"></script>-->
+
+  <!-- Demo scripts for this page-->
+  <!-- <script src="js/demo/datatables-demo.js"></script> -->
+
+</body>
+
+</html>

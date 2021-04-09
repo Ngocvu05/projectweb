@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng kí tài khoản</title>
+    <head th:replace="Home/head :: head">
+    </head>
+<body>
+<div th:replace="Home/header :: header"></div>
+<div class="container">
+<form id='register_form' th:action="@{/add-user}" method='POST' modelAttribute="user">
+    <div class="form-group">
+        <h2>Đăng Kí Tài Khoản</h2>
+        <input name="username" type="text" class="form-control" id="username"
+               placeholder="Nhập Email"/>
+        <small style="display: none" id="username_" class="form-text">Username không được để
+            trống</small>
+    </div>
+    <div class="form-group">
+        <input name="password" type="password" class="form-control" id="password"
+               placeholder="Nhập mật khẩu"/>
+        <small style="display: none" id="password_" class="form-text">Mật khẩu không được để
+            trống</small>
+    </div>
+    <div class="form-group">
+        <input name="re_password" type="password" class="form-control" id="re_password"
+               placeholder="Nhập lại mật khẩu"/>
+        <small style="display: none" id="re_password_" class="form-text" >Không được để trống</small>
+    </div>
+    <div class="form-group">
+        <input name="ten" type="text" class="form-control" id="name"
+               placeholder="Nhập họ tên"/>
+        <small style="display: none" id="name_" class="form-text">Họ tên không được để
+            trống</small>
+    </div>
+    <div class="form-group">
+        <input name="sdt" type="number" class="form-control" id="phone"
+               placeholder="Nhập số điện thoại"/>
+        <small style="display: none" id="phone_" class="form-text">Số điện thoại không được để
+            trống</small>
+    </div>
+    <div class="form-group">
+        <input name="diachi" type="text" class="form-control" id="address"
+               placeholder="Nhập địa chỉ"/>
+        <small style="display: none" id="address_" class="form-text">Địa chỉ không được để
+            trống</small>
+    </div>
+
+    <button th:disabled="false" id="reset" type="reset" class="btn btn-success">Nhập lạí</button>
+    <button th:disabled="true" id="submit" type="submit" class="btn btn-success">Đăng ký</button>
+</form>
+</div>
+
+<!--Footer-->
+<div th:replace="Home/footer ::footer"></div>
+<!--Footer-->
+<script th:src="@{/js/register.js}"></script>
+</body>
+</html>
